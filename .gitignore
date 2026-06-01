@@ -1,0 +1,46 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# environments
+.venv/
+venv/
+env/
+
+# build outputs
+build/
+dist/
+*.egg-info/
+
+# generated artifacts
+tmp/
+outputs/
+*.log
+*.out
+*.err
+*.zip
+*.xlsx
+*.xls
+*.csv
+*.png
+*.jpg
+*.jpeg
+
+# editors
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# local agent planning notes
+docs/superpowers/
+
+# private implementation drops must never be copied here
+private_vertical_app/
+private_checks/
+private_profiles/

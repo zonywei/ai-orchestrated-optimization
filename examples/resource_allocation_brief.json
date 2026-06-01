@@ -1,0 +1,17 @@
+{
+  "title": "Cross-functional capacity allocation",
+  "goal": "Allocate limited capacity across competing operational demands while preserving feasibility and explainability.",
+  "contexts": [
+    "workforce rostering",
+    "manufacturing dispatch",
+    "logistics optimization",
+    "inventory allocation",
+    "cost reduction"
+  ],
+  "success_metrics": [
+    "all hard constraints satisfied",
+    "soft tradeoffs traceable to business rules",
+    "diagnostics readable by non-technical operators"
+  ],
+  "private_data_included": false
+}
