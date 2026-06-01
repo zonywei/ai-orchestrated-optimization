@@ -122,4 +122,4 @@ This is an early public framework seed. It is intentionally small, auditable, an
 
 ## License
 
-MIT.
+Apache License 2.0.
