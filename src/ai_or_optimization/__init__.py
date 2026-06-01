@@ -2,6 +2,11 @@
 
 from .agents import AgentRole, Handoff, build_default_agent_topology
 from .audit import ConstraintAuditItem, ConstraintAuditReport, audit_constraints
+from .contributions import (
+    ObjectiveContribution,
+    ObjectiveContributionReport,
+    analyze_objective_contributions,
+)
 from .contracts import (
     BusinessBrief,
     DecisionVariable,
@@ -39,6 +44,8 @@ __all__ = [
     "InfeasibilityFinding",
     "LinearConstraint",
     "Objective",
+    "ObjectiveContribution",
+    "ObjectiveContributionReport",
     "OptimizationProblem",
     "RuleFirstPlan",
     "RuleSpec",
@@ -46,6 +53,7 @@ __all__ = [
     "SolverAdapter",
     "SolverOptions",
     "ValidationIssue",
+    "analyze_objective_contributions",
     "audit_constraints",
     "build_default_agent_topology",
     "build_rule_first_plan",
