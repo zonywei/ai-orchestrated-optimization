@@ -13,6 +13,7 @@ from .contracts import (
 )
 from .demo_solver import solve_assignment_problem
 from .planner import build_rule_first_plan
+from .validation import ValidationIssue, validate_problem, validate_solve_report
 
 __all__ = [
     "AgentRole",
@@ -25,7 +26,10 @@ __all__ = [
     "RuleFirstPlan",
     "RuleSpec",
     "SolveReport",
+    "ValidationIssue",
     "build_default_agent_topology",
     "build_rule_first_plan",
     "solve_assignment_problem",
+    "validate_problem",
+    "validate_solve_report",
 ]

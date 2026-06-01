@@ -32,6 +32,7 @@ Business pain point
   -> Decision variables
   -> Constraints
   -> Objective
+  -> Validation gate
   -> Solver run
   -> Diagnostics and next action
 ```
@@ -67,6 +68,7 @@ This public repository contains a small, clean framework surface:
 - typed contracts for briefs, rules, variables, constraints, objectives, plans, and reports;
 - a canonical AI OR agent topology;
 - a rule-first planner;
+- contract validation for rule traceability and variable references;
 - a tiny exhaustive demo optimizer for public examples;
 - generic examples that do not depend on any private vertical application;
 - release-boundary checks to keep private implementation material out.
@@ -102,6 +104,7 @@ src/ai_or_optimization/
   agents.py       # AI OR role topology and handoff map
   contracts.py    # public optimization artifact contracts
   planner.py      # rule-first ordering
+  validation.py   # contract-level traceability checks
   demo_solver.py  # small public exhaustive optimizer
 examples/
   assignment_demo.py

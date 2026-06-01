@@ -7,6 +7,8 @@ from ai_or_optimization import (
     RuleSpec,
     build_rule_first_plan,
     solve_assignment_problem,
+    validate_problem,
+    validate_solve_report,
 )
 
 
@@ -46,6 +48,10 @@ def build_demo_problem() -> OptimizationProblem:
 
 def main() -> None:
     problem = build_demo_problem()
+    problem_issues = validate_problem(problem)
+    if problem_issues:
+        raise SystemExit("; ".join(issue.message for issue in problem_issues))
+
     plan = build_rule_first_plan(problem.rules)
     report = solve_assignment_problem(
         {
@@ -55,6 +61,10 @@ def main() -> None:
         },
         rule_trace=plan.rule_ids,
     )
+    report_issues = validate_solve_report(problem, report)
+    if report_issues:
+        raise SystemExit("; ".join(issue.message for issue in report_issues))
+
     print(f"status={report.status}")
     print(f"objective={report.objective_value}")
     print(f"assignments={report.assignments}")

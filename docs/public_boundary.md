@@ -7,6 +7,7 @@ This repository is designed to be public from the first commit. It must stay dom
 - generic AI OR contracts;
 - agent topology;
 - rule-first planning utilities;
+- contract validation utilities;
 - small public examples;
 - narrative documentation;
 - release-boundary checks.
