@@ -84,6 +84,20 @@ Business Expert
 
 公开目标是展示 AI + 运筹优化框架方向和最小可运行表面。生产级垂直系统应保留在单独的私有仓库，除非经过明确清理并决定公开发布。
 
+## 当前能力边界
+
+当前仓库已经能证明一个很窄但可运行的公开闭环：
+
+- 面向业务 brief、规则、模型工件、计划和报告的 rule-first 公开契约；
+- 用于规则追溯、变量引用和报告一致性的 validation gate；
+- 求解前 constraint audit 和基础 infeasibility diagnostics；
+- 用统一框架契约连接不同执行引擎的 solver adapter protocol；
+- 面向二元和整数线性模型的 OR-Tools CP-SAT 执行能力；
+- 包含 30 个二元决策变量的 synthetic workforce rostering 示例；
+- 能把解的成本或收益映射回规则的 objective contribution analysis。
+
+它仍然刻意不提供真实 LLM 编排、生产级垂直系统、私有规则库、大规模 benchmark，或自动自然语言到模型生成。
+
 ## 快速开始
 
 ```powershell

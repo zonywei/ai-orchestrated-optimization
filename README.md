@@ -89,6 +89,20 @@ This repository does not publish private vertical applications, customer data, p
 
 The public goal is to share the AI + OR framework direction and a runnable minimal surface. Production-grade vertical systems should live in separate private repositories unless they are intentionally cleaned and released.
 
+## Current Capability
+
+This repository currently proves a narrow but runnable public slice:
+
+- rule-first public contracts for business briefs, rules, model artifacts, plans, and reports;
+- validation gates for traceability, variable references, and report consistency;
+- pre-solve constraint audit and basic infeasibility diagnostics;
+- solver adapter protocol for connecting execution engines behind one framework contract;
+- OR-Tools CP-SAT execution for binary and integer linear models;
+- a synthetic workforce rostering example with 30 binary decision variables;
+- objective contribution analysis that maps solution cost or value back to rules.
+
+It intentionally does not yet provide live LLM orchestration, production vertical applications, private rule libraries, large benchmark suites, or automatic natural-language-to-model generation.
+
 ## Quick Start
 
 ```powershell
