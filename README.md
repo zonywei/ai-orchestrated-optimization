@@ -5,6 +5,10 @@
 
 # AI-Orchestrated Optimization
 
+[![CI](https://github.com/zonywei/ai-orchestrated-optimization/actions/workflows/ci.yml/badge.svg)](https://github.com/zonywei/ai-orchestrated-optimization/actions/workflows/ci.yml)
+[![License](https://img.shields.io/badge/license-Apache--2.0-green.svg)](LICENSE)
+![Python](https://img.shields.io/badge/python-3.11%2B-blue.svg)
+
 > AI + Operations Research for the next generation of decision automation.
 
 Most organizations already have enough data to make better operational decisions. What they often lack is the translation layer between human policy and mathematical action: the messy rules, preferences, tradeoffs, and exceptions that live in meetings, spreadsheets, messages, and expert intuition.
@@ -103,6 +107,18 @@ This repository currently proves a narrow but runnable public slice:
 
 It intentionally does not yet provide live LLM orchestration, production vertical applications, private rule libraries, large benchmark suites, or automatic natural-language-to-model generation.
 
+## Maintenance And OSS Signals
+
+This repository is structured as a maintained open-source project, not a one-off code dump:
+
+- CI runs tests and the public release-boundary audit on every push and pull request;
+- Dependabot tracks Python and GitHub Actions updates;
+- contribution, security, issue, and pull request templates define the maintainer workflow;
+- the roadmap separates near-term technical work from non-goals;
+- Codex for Open Source application notes explain how maintainer automation and API credits would be used.
+
+See [CONTRIBUTING.md](CONTRIBUTING.md), [SECURITY.md](SECURITY.md), [docs/roadmap.md](docs/roadmap.md), and [docs/codex_for_oss.md](docs/codex_for_oss.md).
+
 ## Quick Start
 
 ```powershell
@@ -159,6 +175,8 @@ docs/
   architecture.md
   use_cases.md
   public_boundary.md
+  roadmap.md
+  codex_for_oss.md
 scripts/
   check_release_boundary.py
 tests/
@@ -168,6 +186,11 @@ tests/
   test_solver_adapters.py
   test_objective_contributions.py
   test_cp_sat_adapter.py
+.github/
+  workflows/ci.yml
+  dependabot.yml
+  ISSUE_TEMPLATE/
+  pull_request_template.md
 ```
 
 ## Status

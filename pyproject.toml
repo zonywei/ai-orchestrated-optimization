@@ -32,6 +32,12 @@ classifiers = [
 ]
 dependencies = []
 
+[project.urls]
+Homepage = "https://github.com/zonywei/ai-orchestrated-optimization"
+Repository = "https://github.com/zonywei/ai-orchestrated-optimization"
+Issues = "https://github.com/zonywei/ai-orchestrated-optimization/issues"
+Documentation = "https://github.com/zonywei/ai-orchestrated-optimization#readme"
+
 [project.optional-dependencies]
 cp-sat = [
   "ortools==9.15.6755"

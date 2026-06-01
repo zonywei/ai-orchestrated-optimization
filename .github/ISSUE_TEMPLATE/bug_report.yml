@@ -1,0 +1,36 @@
+name: Bug report
+description: Report a reproducible problem in the public framework.
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What failed, and what did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduction
+      description: Provide a minimal public example or command sequence.
+      placeholder: |
+        python -m pytest -q
+        python examples/cp_sat_workforce_demo.py
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Python version, operating system, and package install method.
+    validations:
+      required: false
+  - type: checkboxes
+    id: boundary
+    attributes:
+      label: Public boundary
+      options:
+        - label: This report does not include private data, logs, archives, spreadsheets, or proprietary implementation details.
+          required: true

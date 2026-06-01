@@ -5,6 +5,10 @@
 
 # AI-Orchestrated Optimization
 
+[![CI](https://github.com/zonywei/ai-orchestrated-optimization/actions/workflows/ci.yml/badge.svg)](https://github.com/zonywei/ai-orchestrated-optimization/actions/workflows/ci.yml)
+[![License](https://img.shields.io/badge/license-Apache--2.0-green.svg)](LICENSE)
+![Python](https://img.shields.io/badge/python-3.11%2B-blue.svg)
+
 > AI + 运筹优化：面向下一代决策自动化的开源框架。
 
 AI-Orchestrated Optimization 是一个全新的 AI + 运筹优化框架方向，目标是把大语言模型的语义理解、规则抽取、方案诊断能力，与运筹优化的可行性、最优性、约束推理能力结合起来。
@@ -98,6 +102,18 @@ Business Expert
 
 它仍然刻意不提供真实 LLM 编排、生产级垂直系统、私有规则库、大规模 benchmark，或自动自然语言到模型生成。
 
+## 维护与开源项目信号
+
+这个仓库会按一个可维护的开源项目来组织，而不是一次性代码展示：
+
+- CI 会在 push 和 pull request 上运行测试与公开边界检查；
+- Dependabot 会跟踪 Python 与 GitHub Actions 依赖更新；
+- contribution、security、issue 和 pull request 模板定义维护流程；
+- roadmap 区分近期技术工作与非目标；
+- Codex for Open Source 申请说明记录了如何把 Codex/API credits 用在维护自动化上。
+
+参见 [CONTRIBUTING.md](CONTRIBUTING.md)、[SECURITY.md](SECURITY.md)、[docs/roadmap.md](docs/roadmap.md) 和 [docs/codex_for_oss.md](docs/codex_for_oss.md)。
+
 ## 快速开始
 
 ```powershell
@@ -154,6 +170,8 @@ docs/
   architecture.md
   use_cases.md
   public_boundary.md
+  roadmap.md
+  codex_for_oss.md
 scripts/
   check_release_boundary.py
 tests/
@@ -163,6 +181,11 @@ tests/
   test_solver_adapters.py
   test_objective_contributions.py
   test_cp_sat_adapter.py
+.github/
+  workflows/ci.yml
+  dependabot.yml
+  ISSUE_TEMPLATE/
+  pull_request_template.md
 ```
 
 ## 当前状态
