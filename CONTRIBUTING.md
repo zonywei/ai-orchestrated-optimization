@@ -7,8 +7,7 @@ AI-Orchestrated Optimization is an early public framework seed. Contributions sh
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -e ".[dev]"
-.\.venv\Scripts\python.exe -m pytest -q
-.\.venv\Scripts\python.exe scripts\check_release_boundary.py
+.\.venv\Scripts\python.exe scripts\run_quality_gates.py
 ```
 
 On Unix-like shells, use the same Python module commands with your environment's Python executable.
@@ -18,13 +17,10 @@ On Unix-like shells, use the same Python module commands with your environment's
 Before opening a pull request, run:
 
 ```powershell
-python -m pytest -q
-python scripts\check_release_boundary.py
-python examples\assignment_demo.py
-python examples\cp_sat_workforce_demo.py
+python scripts\run_quality_gates.py
 ```
 
-The release-boundary check is part of the public contract. A contribution that fails it should be treated as not ready for review.
+The quality gate runs tests, examples, and the release-boundary check. A contribution that fails it should be treated as not ready for review.
 
 ## Public Boundary
 

@@ -124,6 +124,7 @@ python -m venv .venv
 .\.venv\Scripts\python.exe examples\cp_sat_workforce_demo.py
 .\.venv\Scripts\python.exe -m pytest -q
 .\.venv\Scripts\python.exe scripts\check_release_boundary.py
+.\.venv\Scripts\python.exe scripts\run_quality_gates.py
 ```
 
 预期 demo 输出：
@@ -174,6 +175,7 @@ docs/
   codex_for_oss.md
 scripts/
   check_release_boundary.py
+  run_quality_gates.py
 tests/
   test_public_framework.py
   test_constraint_audit.py
