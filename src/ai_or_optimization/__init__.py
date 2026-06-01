@@ -19,6 +19,12 @@ from .diagnostics import (
 )
 from .demo_solver import solve_assignment_problem
 from .planner import build_rule_first_plan
+from .solver_adapters import (
+    ExhaustiveAssignmentAdapter,
+    SolverAdapter,
+    SolverOptions,
+    run_solver,
+)
 from .validation import ValidationIssue, validate_problem, validate_solve_report
 
 __all__ = [
@@ -27,6 +33,7 @@ __all__ = [
     "ConstraintAuditItem",
     "ConstraintAuditReport",
     "DecisionVariable",
+    "ExhaustiveAssignmentAdapter",
     "Handoff",
     "InfeasibilityDiagnosis",
     "InfeasibilityFinding",
@@ -36,11 +43,14 @@ __all__ = [
     "RuleFirstPlan",
     "RuleSpec",
     "SolveReport",
+    "SolverAdapter",
+    "SolverOptions",
     "ValidationIssue",
     "audit_constraints",
     "build_default_agent_topology",
     "build_rule_first_plan",
     "diagnose_infeasibility",
+    "run_solver",
     "solve_assignment_problem",
     "validate_problem",
     "validate_solve_report",
