@@ -71,6 +71,7 @@ Business Expert
 - 用于规则追溯和变量引用检查的 contract validation；
 - 用于求解前边界检查的 constraint audit；
 - 把不可行约束映射回业务规则的 infeasibility diagnostics；
+- 用统一公开契约接入不同执行引擎的 solver adapter interface；
 - 一个很小的穷举 demo optimizer；
 - 与私有垂直应用无关的通用示例；
 - release-boundary 检查，防止私有实现材料进入公开仓库。
@@ -109,6 +110,7 @@ src/ai_or_optimization/
   validation.py   # contract-level traceability checks
   audit.py        # constraint-level pre-solve audit
   diagnostics.py  # infeasibility explanation helpers
+  solver_adapters.py # solver adapter protocol and public demo adapter
   demo_solver.py  # small public exhaustive optimizer
 examples/
   assignment_demo.py

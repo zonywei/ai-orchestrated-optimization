@@ -76,6 +76,7 @@ This public repository contains a small, clean framework surface:
 - contract validation for rule traceability and variable references;
 - constraint audit for bound-based pre-solve checks;
 - infeasibility diagnostics that connect failed constraints back to rules;
+- solver adapter interface for plugging execution engines behind the same public contract;
 - a tiny exhaustive demo optimizer for public examples;
 - generic examples that do not depend on any private vertical application;
 - release-boundary checks to keep private implementation material out.
@@ -114,6 +115,7 @@ src/ai_or_optimization/
   validation.py   # contract-level traceability checks
   audit.py        # constraint-level pre-solve audit
   diagnostics.py  # infeasibility explanation helpers
+  solver_adapters.py # solver adapter protocol and public demo adapter
   demo_solver.py  # small public exhaustive optimizer
 examples/
   assignment_demo.py
