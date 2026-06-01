@@ -97,11 +97,14 @@ def validate_problem(problem: OptimizationProblem) -> tuple[ValidationIssue, ...
 def validate_solve_report(
     problem: OptimizationProblem,
     report: SolveReport,
+    *,
+    validate_assignments: bool = False,
 ) -> tuple[ValidationIssue, ...]:
     """Validate that a solve report can be traced back to the problem rules."""
 
     issues: list[ValidationIssue] = []
     known_rule_ids = {rule.rule_id for rule in problem.rules}
+    known_variable_names = {variable.name for variable in problem.variables}
     for index, rule_id in enumerate(report.rule_trace):
         if rule_id not in known_rule_ids:
             issues.append(
@@ -111,7 +114,81 @@ def validate_solve_report(
                     f"rule_trace[{index}]",
                 )
             )
+
+    if validate_assignments and report.status in {"optimal", "feasible"}:
+        issues.extend(_validate_assignment_keys(report, known_variable_names))
+        issues.extend(_validate_constraint_activity(problem, report))
     return tuple(issues)
+
+
+def _validate_assignment_keys(
+    report: SolveReport,
+    known_variable_names: set[str],
+) -> tuple[ValidationIssue, ...]:
+    issues: list[ValidationIssue] = []
+    for variable_name in report.assignments:
+        if variable_name not in known_variable_names:
+            issues.append(
+                ValidationIssue(
+                    "unknown_assignment_variable",
+                    f"Solve report assigns unknown variable {variable_name!r}.",
+                    "assignments",
+                )
+            )
+    return tuple(issues)
+
+
+def _validate_constraint_activity(
+    problem: OptimizationProblem,
+    report: SolveReport,
+) -> tuple[ValidationIssue, ...]:
+    issues: list[ValidationIssue] = []
+    for index, constraint in enumerate(problem.constraints):
+        missing_variables = tuple(
+            variable_name
+            for variable_name in constraint.expression
+            if variable_name not in report.assignments
+        )
+        if missing_variables:
+            issues.append(
+                ValidationIssue(
+                    "missing_assignment_value",
+                    f"Solve report is missing assignments for {missing_variables!r}.",
+                    f"constraints[{index}].expression",
+                )
+            )
+            continue
+
+        activity = sum(
+            coefficient * report.assignments[variable_name]
+            for variable_name, coefficient in constraint.expression.items()
+        )
+        if not _constraint_satisfied(activity, constraint.operator, constraint.rhs):
+            issues.append(
+                ValidationIssue(
+                    "violated_constraint",
+                    (
+                        f"Solve report activity {activity!r} violates constraint "
+                        f"{constraint.operator} {constraint.rhs!r}."
+                    ),
+                    f"constraints[{index}]",
+                )
+            )
+    return tuple(issues)
+
+
+def _constraint_satisfied(
+    activity: int | float,
+    operator: str,
+    rhs: int | float,
+) -> bool:
+    if operator == "<=":
+        return activity <= rhs
+    if operator == "==":
+        return activity == rhs
+    if operator == ">=":
+        return activity >= rhs
+    return False
 
 
 def _duplicate_issues(

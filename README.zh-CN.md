@@ -123,6 +123,9 @@ scripts/
   check_release_boundary.py
 tests/
   test_public_framework.py
+  test_constraint_audit.py
+  test_infeasibility_diagnostics.py
+  test_solver_adapters.py
 ```
 
 ## 当前状态
