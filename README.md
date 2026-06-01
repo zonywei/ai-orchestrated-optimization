@@ -78,6 +78,7 @@ This public repository contains a small, clean framework surface:
 - infeasibility diagnostics that connect failed constraints back to rules;
 - solver adapter interface for plugging execution engines behind the same public contract;
 - objective contribution analysis for explaining where a solution's cost or value comes from;
+- OR-Tools CP-SAT adapter with a synthetic workforce rostering example;
 - a tiny exhaustive demo optimizer for public examples;
 - generic examples that do not depend on any private vertical application;
 - release-boundary checks to keep private implementation material out.
@@ -94,6 +95,8 @@ The public goal is to share the AI + OR framework direction and a runnable minim
 python -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -e .[dev]
 .\.venv\Scripts\python.exe examples\assignment_demo.py
+.\.venv\Scripts\python.exe -m pip install -e ".[cp-sat]"
+.\.venv\Scripts\python.exe examples\cp_sat_workforce_demo.py
 .\.venv\Scripts\python.exe -m pytest -q
 .\.venv\Scripts\python.exe scripts\check_release_boundary.py
 ```
@@ -104,6 +107,18 @@ Expected demo output:
 status=optimal
 objective=9
 assignments={'alpha': 'north', 'beta': 'south', 'gamma': 'east'}
+```
+
+Expected CP-SAT demo output:
+
+```text
+status=optimal
+objective=5.0
+slot_1=ava
+slot_2=cy
+slot_3=ben
+slot_4=dia
+slot_5=eli
 ```
 
 ## Public Repository Layout
@@ -118,10 +133,14 @@ src/ai_or_optimization/
   diagnostics.py  # infeasibility explanation helpers
   contributions.py # objective contribution analysis
   solver_adapters.py # solver adapter protocol and public demo adapter
+  cp_sat_adapter.py # OR-Tools CP-SAT adapter
   demo_solver.py  # small public exhaustive optimizer
 examples/
   assignment_demo.py
+  cp_sat_workforce_demo.py
   resource_allocation_brief.json
+  workforce_rostering_cp_sat.json
+  reports/workforce_rostering_diagnosis.md
 docs/
   architecture.md
   use_cases.md
@@ -134,6 +153,7 @@ tests/
   test_infeasibility_diagnostics.py
   test_solver_adapters.py
   test_objective_contributions.py
+  test_cp_sat_adapter.py
 ```
 
 ## Status

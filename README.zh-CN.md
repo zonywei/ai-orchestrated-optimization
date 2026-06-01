@@ -73,6 +73,7 @@ Business Expert
 - 把不可行约束映射回业务规则的 infeasibility diagnostics；
 - 用统一公开契约接入不同执行引擎的 solver adapter interface；
 - 用于解释成本或收益来源的 objective contribution analysis；
+- 基于 OR-Tools CP-SAT 的公开 synthetic workforce rostering 示例；
 - 一个很小的穷举 demo optimizer；
 - 与私有垂直应用无关的通用示例；
 - release-boundary 检查，防止私有实现材料进入公开仓库。
@@ -89,6 +90,8 @@ Business Expert
 python -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -e .[dev]
 .\.venv\Scripts\python.exe examples\assignment_demo.py
+.\.venv\Scripts\python.exe -m pip install -e ".[cp-sat]"
+.\.venv\Scripts\python.exe examples\cp_sat_workforce_demo.py
 .\.venv\Scripts\python.exe -m pytest -q
 .\.venv\Scripts\python.exe scripts\check_release_boundary.py
 ```
@@ -99,6 +102,18 @@ python -m venv .venv
 status=optimal
 objective=9
 assignments={'alpha': 'north', 'beta': 'south', 'gamma': 'east'}
+```
+
+预期 CP-SAT demo 输出：
+
+```text
+status=optimal
+objective=5.0
+slot_1=ava
+slot_2=cy
+slot_3=ben
+slot_4=dia
+slot_5=eli
 ```
 
 ## 公开仓库结构
@@ -113,10 +128,14 @@ src/ai_or_optimization/
   diagnostics.py  # infeasibility explanation helpers
   contributions.py # objective contribution analysis
   solver_adapters.py # solver adapter protocol and public demo adapter
+  cp_sat_adapter.py # OR-Tools CP-SAT adapter
   demo_solver.py  # small public exhaustive optimizer
 examples/
   assignment_demo.py
+  cp_sat_workforce_demo.py
   resource_allocation_brief.json
+  workforce_rostering_cp_sat.json
+  reports/workforce_rostering_diagnosis.md
 docs/
   architecture.md
   use_cases.md
@@ -129,6 +148,7 @@ tests/
   test_infeasibility_diagnostics.py
   test_solver_adapters.py
   test_objective_contributions.py
+  test_cp_sat_adapter.py
 ```
 
 ## 当前状态

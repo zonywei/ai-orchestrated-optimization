@@ -1,0 +1,28 @@
+{
+  "source": "synthetic_public_example",
+  "title": "Synthetic workforce rostering with CP-SAT",
+  "goal": "Assign operators to demand slots while respecting capacity and skill-fit rules.",
+  "operators": [
+    {"id": "ava", "skills": ["assembly", "quality"], "max_slots": 2},
+    {"id": "ben", "skills": ["packing", "assembly"], "max_slots": 2},
+    {"id": "cy", "skills": ["quality", "loading"], "max_slots": 2},
+    {"id": "dia", "skills": ["packing", "loading"], "max_slots": 2},
+    {"id": "eli", "skills": ["assembly", "loading"], "max_slots": 2},
+    {"id": "fay", "skills": ["quality", "packing"], "max_slots": 2}
+  ],
+  "shifts": [
+    {"id": "slot_1", "required_skill": "assembly"},
+    {"id": "slot_2", "required_skill": "quality"},
+    {"id": "slot_3", "required_skill": "packing"},
+    {"id": "slot_4", "required_skill": "loading"},
+    {"id": "slot_5", "required_skill": "assembly"}
+  ],
+  "costs": {
+    "ava": {"slot_1": 1, "slot_2": 2, "slot_3": 8, "slot_4": 9, "slot_5": 3},
+    "ben": {"slot_1": 2, "slot_2": 8, "slot_3": 1, "slot_4": 9, "slot_5": 2},
+    "cy": {"slot_1": 9, "slot_2": 1, "slot_3": 8, "slot_4": 2, "slot_5": 9},
+    "dia": {"slot_1": 9, "slot_2": 8, "slot_3": 2, "slot_4": 1, "slot_5": 9},
+    "eli": {"slot_1": 3, "slot_2": 9, "slot_3": 9, "slot_4": 2, "slot_5": 1},
+    "fay": {"slot_1": 9, "slot_2": 3, "slot_3": 2, "slot_4": 8, "slot_5": 9}
+  }
+}

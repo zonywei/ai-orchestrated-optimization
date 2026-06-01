@@ -7,6 +7,7 @@ from .contributions import (
     ObjectiveContributionReport,
     analyze_objective_contributions,
 )
+from .cp_sat_adapter import CpSatAdapter
 from .contracts import (
     BusinessBrief,
     DecisionVariable,
@@ -37,6 +38,7 @@ __all__ = [
     "BusinessBrief",
     "ConstraintAuditItem",
     "ConstraintAuditReport",
+    "CpSatAdapter",
     "DecisionVariable",
     "ExhaustiveAssignmentAdapter",
     "Handoff",

@@ -33,8 +33,12 @@ classifiers = [
 dependencies = []
 
 [project.optional-dependencies]
+cp-sat = [
+  "ortools==9.15.6755"
+]
 dev = [
-  "pytest>=8"
+  "pytest>=8",
+  "ortools==9.15.6755"
 ]
 
 [tool.setuptools.packages.find]
