@@ -8,6 +8,7 @@ These notes keep the repository aligned with the Codex for Open Source applicati
 - Python package with typed public contracts and tests.
 - CI and a local quality-gate runner for tests, examples, and public release-boundary checks.
 - OR-Tools CP-SAT adapter with a synthetic workforce rostering demo.
+- Deterministic relaxation suggestions for structurally impossible constraints.
 - Contribution, security, issue, pull request, and roadmap documents.
 - Explicit public/private boundary to keep sensitive implementation material out.
 

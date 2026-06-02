@@ -25,6 +25,11 @@ from .diagnostics import (
 )
 from .demo_solver import solve_assignment_problem
 from .planner import build_rule_first_plan
+from .relaxations import (
+    ConstraintRelaxationSuggestion,
+    RelaxationReport,
+    suggest_constraint_relaxations,
+)
 from .solver_adapters import (
     ExhaustiveAssignmentAdapter,
     SolverAdapter,
@@ -49,8 +54,10 @@ __all__ = [
     "ObjectiveContribution",
     "ObjectiveContributionReport",
     "OptimizationProblem",
+    "ConstraintRelaxationSuggestion",
     "RuleFirstPlan",
     "RuleSpec",
+    "RelaxationReport",
     "SolveReport",
     "SolverAdapter",
     "SolverOptions",
@@ -62,6 +69,7 @@ __all__ = [
     "diagnose_infeasibility",
     "run_solver",
     "solve_assignment_problem",
+    "suggest_constraint_relaxations",
     "validate_problem",
     "validate_solve_report",
 ]

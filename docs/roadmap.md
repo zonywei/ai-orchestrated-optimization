@@ -13,7 +13,8 @@ This roadmap keeps the public repository focused on reusable AI plus operations 
    - Identify small groups of rules that jointly create infeasibility.
 
 3. **Relaxation suggestions**
-   - Represent candidate rule revisions, penalty changes, or bound adjustments.
+   - Initial RHS-only structural suggestions are implemented for impossible constraints.
+   - Next: represent candidate rule revisions, penalty changes, or bound adjustments.
    - Rank suggestions by feasibility impact and business cost.
 
 4. **Solver adapter coverage**

@@ -95,6 +95,7 @@ Business Expert
 - 面向业务 brief、规则、模型工件、计划和报告的 rule-first 公开契约；
 - 用于规则追溯、变量引用和报告一致性的 validation gate；
 - 求解前 constraint audit 和基础 infeasibility diagnostics；
+- 对结构性不可行约束给出确定性的 RHS relaxation suggestion；
 - 用统一框架契约连接不同执行引擎的 solver adapter protocol；
 - 面向二元和整数线性模型的 OR-Tools CP-SAT 执行能力；
 - 包含 30 个二元决策变量的 synthetic workforce rostering 示例；
@@ -157,6 +158,7 @@ src/ai_or_optimization/
   validation.py   # contract-level traceability checks
   audit.py        # constraint-level pre-solve audit
   diagnostics.py  # infeasibility explanation helpers
+  relaxations.py  # deterministic RHS relaxation suggestions
   contributions.py # objective contribution analysis
   solver_adapters.py # solver adapter protocol and public demo adapter
   cp_sat_adapter.py # OR-Tools CP-SAT adapter
@@ -180,6 +182,7 @@ tests/
   test_public_framework.py
   test_constraint_audit.py
   test_infeasibility_diagnostics.py
+  test_relaxations.py
   test_solver_adapters.py
   test_objective_contributions.py
   test_cp_sat_adapter.py

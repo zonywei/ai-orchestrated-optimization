@@ -7,6 +7,7 @@ from typing import Literal
 
 from .audit import audit_constraints
 from .contracts import OptimizationProblem, SolveReport
+from .relaxations import ConstraintRelaxationSuggestion, suggest_constraint_relaxations
 
 
 DiagnosisStatus = Literal[
@@ -49,6 +50,10 @@ def diagnose_infeasibility(
     """Explain structural or reported infeasibility in rule-level terms."""
 
     audit_report = audit_constraints(problem)
+    suggestions_by_constraint = {
+        suggestion.constraint_index: suggestion
+        for suggestion in suggest_constraint_relaxations(problem).suggestions
+    }
     structural_findings = tuple(
         InfeasibilityFinding(
             rule_id=item.rule_id,
@@ -58,9 +63,7 @@ def diagnose_infeasibility(
                 f"variable bounds: activity range {_format_range(item.activity_min, item.activity_max)} "
                 f"{item.operator} {item.rhs}."
             ),
-            suggested_action=(
-                "Check the linked rule, variable bounds, coefficient signs, or RHS."
-            ),
+            suggested_action=_suggested_action(item.constraint_index, suggestions_by_constraint),
         )
         for item in audit_report.violated_items
     )
@@ -100,3 +103,13 @@ def _format_range(
     activity_max: int | float | None,
 ) -> str:
     return f"{activity_min}..{activity_max}"
+
+
+def _suggested_action(
+    constraint_index: int,
+    suggestions_by_constraint: dict[int, ConstraintRelaxationSuggestion],
+) -> str:
+    suggestion = suggestions_by_constraint.get(constraint_index)
+    if suggestion is None:
+        return "Check the linked rule, variable bounds, coefficient signs, or RHS."
+    return suggestion.suggested_action

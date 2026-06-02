@@ -100,6 +100,7 @@ This repository currently proves a narrow but runnable public slice:
 - rule-first public contracts for business briefs, rules, model artifacts, plans, and reports;
 - validation gates for traceability, variable references, and report consistency;
 - pre-solve constraint audit and basic infeasibility diagnostics;
+- deterministic RHS relaxation suggestions for structurally impossible constraints;
 - solver adapter protocol for connecting execution engines behind one framework contract;
 - OR-Tools CP-SAT execution for binary and integer linear models;
 - a synthetic workforce rostering example with 30 binary decision variables;
@@ -162,6 +163,7 @@ src/ai_or_optimization/
   validation.py   # contract-level traceability checks
   audit.py        # constraint-level pre-solve audit
   diagnostics.py  # infeasibility explanation helpers
+  relaxations.py  # deterministic RHS relaxation suggestions
   contributions.py # objective contribution analysis
   solver_adapters.py # solver adapter protocol and public demo adapter
   cp_sat_adapter.py # OR-Tools CP-SAT adapter
@@ -185,6 +187,7 @@ tests/
   test_public_framework.py
   test_constraint_audit.py
   test_infeasibility_diagnostics.py
+  test_relaxations.py
   test_solver_adapters.py
   test_objective_contributions.py
   test_cp_sat_adapter.py
