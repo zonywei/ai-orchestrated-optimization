@@ -98,7 +98,7 @@ The public goal is to share the AI + OR framework direction and a runnable minim
 This repository currently proves a narrow but runnable public slice:
 
 - rule-first public contracts for business briefs, rules, model artifacts, plans, and reports;
-- validation gates for traceability, variable references, and report consistency;
+- validation gates for runtime domain values, traceability, variable references, and report consistency;
 - pre-solve constraint audit and basic infeasibility diagnostics;
 - deterministic RHS relaxation suggestions for structurally impossible constraints;
 - solver adapter protocol for connecting execution engines behind one framework contract;

@@ -93,7 +93,7 @@ Business Expert
 当前仓库已经能证明一个很窄但可运行的公开闭环：
 
 - 面向业务 brief、规则、模型工件、计划和报告的 rule-first 公开契约；
-- 用于规则追溯、变量引用和报告一致性的 validation gate；
+- 用于运行时枚举域、规则追溯、变量引用和报告一致性的 validation gate；
 - 求解前 constraint audit 和基础 infeasibility diagnostics；
 - 对结构性不可行约束给出确定性的 RHS relaxation suggestion；
 - 用统一框架契约连接不同执行引擎的 solver adapter protocol；

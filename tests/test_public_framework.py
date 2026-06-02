@@ -180,3 +180,22 @@ def test_validation_reports_invalid_discrete_variable_bounds() -> None:
         "invalid_binary_bounds",
         "invalid_integer_bounds",
     ]
+
+
+def test_validation_reports_invalid_runtime_domain_values() -> None:
+    problem = OptimizationProblem(
+        brief=BusinessBrief("Invalid domain fixture", "Expose invalid literals.", "Test."),
+        rules=(RuleSpec("bad.rule", "Invalid rule kind.", "must"),),
+        variables=(DecisionVariable("x", "semi_binary"),),
+        constraints=(LinearConstraint("bad.rule", {"x": 1}, "!=", 1),),
+        objective=Objective("bad.rule", "lowest", {"x": 1}),
+    )
+
+    issues = validate_problem(problem)
+
+    assert [issue.code for issue in issues] == [
+        "invalid_rule_kind",
+        "invalid_variable_kind",
+        "invalid_constraint_operator",
+        "invalid_objective_sense",
+    ]

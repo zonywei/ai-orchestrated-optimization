@@ -7,6 +7,12 @@ from dataclasses import dataclass
 from .contracts import OptimizationProblem, SolveReport
 
 
+VALID_RULE_KINDS = {"hard", "soft"}
+VALID_VARIABLE_KINDS = {"binary", "integer", "continuous"}
+VALID_CONSTRAINT_OPERATORS = {"<=", "==", ">="}
+VALID_OBJECTIVE_SENSES = {"minimize", "maximize"}
+
+
 @dataclass(frozen=True)
 class ValidationIssue:
     """A contract-level issue that should be resolved before execution."""
@@ -44,7 +50,25 @@ def validate_problem(problem: OptimizationProblem) -> tuple[ValidationIssue, ...
         )
     )
 
+    for index, rule in enumerate(problem.rules):
+        if rule.kind not in VALID_RULE_KINDS:
+            issues.append(
+                ValidationIssue(
+                    "invalid_rule_kind",
+                    f"Rule {rule.rule_id!r} has invalid kind {rule.kind!r}.",
+                    f"rules[{index}].kind",
+                )
+            )
+
     for index, variable in enumerate(problem.variables):
+        if variable.kind not in VALID_VARIABLE_KINDS:
+            issues.append(
+                ValidationIssue(
+                    "invalid_variable_kind",
+                    f"Variable {variable.name!r} has invalid kind {variable.kind!r}.",
+                    f"variables[{index}].kind",
+                )
+            )
         if variable.lower_bound > variable.upper_bound:
             issues.append(
                 ValidationIssue(
@@ -80,6 +104,17 @@ def validate_problem(problem: OptimizationProblem) -> tuple[ValidationIssue, ...
             )
 
     for constraint_index, constraint in enumerate(problem.constraints):
+        if constraint.operator not in VALID_CONSTRAINT_OPERATORS:
+            issues.append(
+                ValidationIssue(
+                    "invalid_constraint_operator",
+                    (
+                        f"Constraint {constraint_index} has invalid operator "
+                        f"{constraint.operator!r}."
+                    ),
+                    f"constraints[{constraint_index}].operator",
+                )
+            )
         if constraint.rule_id not in known_rule_ids:
             issues.append(
                 ValidationIssue(
@@ -96,7 +131,16 @@ def validate_problem(problem: OptimizationProblem) -> tuple[ValidationIssue, ...
                         f"Constraint references unknown variable {variable_name!r}.",
                         f"constraints[{constraint_index}].expression",
                     )
-                )
+            )
+
+    if problem.objective.sense not in VALID_OBJECTIVE_SENSES:
+        issues.append(
+            ValidationIssue(
+                "invalid_objective_sense",
+                f"Objective has invalid sense {problem.objective.sense!r}.",
+                "objective.sense",
+            )
+        )
 
     if problem.objective.rule_id not in known_rule_ids:
         issues.append(
