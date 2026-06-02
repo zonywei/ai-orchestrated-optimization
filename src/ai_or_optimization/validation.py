@@ -53,6 +53,31 @@ def validate_problem(problem: OptimizationProblem) -> tuple[ValidationIssue, ...
                     f"variables[{index}]",
                 )
             )
+        if variable.kind == "binary" and not _valid_binary_bounds(
+            variable.lower_bound,
+            variable.upper_bound,
+        ):
+            issues.append(
+                ValidationIssue(
+                    "invalid_binary_bounds",
+                    (
+                        f"Binary variable {variable.name!r} must have integer bounds "
+                        "inside 0..1."
+                    ),
+                    f"variables[{index}]",
+                )
+            )
+        if variable.kind == "integer" and not (
+            _is_integer_value(variable.lower_bound)
+            and _is_integer_value(variable.upper_bound)
+        ):
+            issues.append(
+                ValidationIssue(
+                    "invalid_integer_bounds",
+                    f"Integer variable {variable.name!r} must have integer bounds.",
+                    f"variables[{index}]",
+                )
+            )
 
     for constraint_index, constraint in enumerate(problem.constraints):
         if constraint.rule_id not in known_rule_ids:
@@ -117,6 +142,8 @@ def validate_solve_report(
 
     if validate_assignments and report.status in {"optimal", "feasible"}:
         issues.extend(_validate_assignment_keys(report, known_variable_names))
+        issues.extend(_validate_assignment_completeness(problem, report))
+        issues.extend(_validate_assignment_values(problem, report))
         issues.extend(_validate_constraint_activity(problem, report))
     return tuple(issues)
 
@@ -138,6 +165,72 @@ def _validate_assignment_keys(
     return tuple(issues)
 
 
+def _validate_assignment_completeness(
+    problem: OptimizationProblem,
+    report: SolveReport,
+) -> tuple[ValidationIssue, ...]:
+    issues: list[ValidationIssue] = []
+    for variable in problem.variables:
+        if variable.name not in report.assignments:
+            issues.append(
+                ValidationIssue(
+                    "missing_assignment_value",
+                    f"Solve report is missing assignment for variable {variable.name!r}.",
+                    f"assignments[{variable.name}]",
+                )
+            )
+    return tuple(issues)
+
+
+def _validate_assignment_values(
+    problem: OptimizationProblem,
+    report: SolveReport,
+) -> tuple[ValidationIssue, ...]:
+    issues: list[ValidationIssue] = []
+    variables_by_name = {variable.name: variable for variable in problem.variables}
+    for variable_name, value in report.assignments.items():
+        variable = variables_by_name.get(variable_name)
+        if variable is None:
+            continue
+        if not _is_numeric(value):
+            issues.append(
+                ValidationIssue(
+                    "invalid_assignment_value",
+                    f"Assignment for {variable_name!r} must be numeric.",
+                    f"assignments[{variable_name}]",
+                )
+            )
+            continue
+        if value < variable.lower_bound or value > variable.upper_bound:
+            issues.append(
+                ValidationIssue(
+                    "assignment_out_of_bounds",
+                    (
+                        f"Assignment {value!r} for {variable_name!r} is outside "
+                        f"{variable.lower_bound!r}..{variable.upper_bound!r}."
+                    ),
+                    f"assignments[{variable_name}]",
+                )
+            )
+        if variable.kind == "binary" and value not in {0, 1}:
+            issues.append(
+                ValidationIssue(
+                    "invalid_binary_assignment",
+                    f"Binary assignment for {variable_name!r} must be 0 or 1.",
+                    f"assignments[{variable_name}]",
+                )
+            )
+        if variable.kind == "integer" and not _is_integer_value(value):
+            issues.append(
+                ValidationIssue(
+                    "invalid_integer_assignment",
+                    f"Integer assignment for {variable_name!r} must be integral.",
+                    f"assignments[{variable_name}]",
+                )
+            )
+    return tuple(issues)
+
+
 def _validate_constraint_activity(
     problem: OptimizationProblem,
     report: SolveReport,
@@ -150,13 +243,13 @@ def _validate_constraint_activity(
             if variable_name not in report.assignments
         )
         if missing_variables:
-            issues.append(
-                ValidationIssue(
-                    "missing_assignment_value",
-                    f"Solve report is missing assignments for {missing_variables!r}.",
-                    f"constraints[{index}].expression",
-                )
-            )
+            continue
+        invalid_variables = tuple(
+            variable_name
+            for variable_name in constraint.expression
+            if not _is_numeric(report.assignments[variable_name])
+        )
+        if invalid_variables:
             continue
 
         activity = sum(
@@ -175,6 +268,25 @@ def _validate_constraint_activity(
                 )
             )
     return tuple(issues)
+
+
+def _valid_binary_bounds(
+    lower_bound: int | float,
+    upper_bound: int | float,
+) -> bool:
+    return (
+        _is_integer_value(lower_bound)
+        and _is_integer_value(upper_bound)
+        and 0 <= lower_bound <= upper_bound <= 1
+    )
+
+
+def _is_numeric(value: object) -> bool:
+    return isinstance(value, int | float)
+
+
+def _is_integer_value(value: int | float) -> bool:
+    return isinstance(value, int) or float(value).is_integer()
 
 
 def _constraint_satisfied(

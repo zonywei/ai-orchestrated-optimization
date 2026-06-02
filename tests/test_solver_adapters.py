@@ -85,6 +85,40 @@ class ViolatingAssignmentAdapter:
         )
 
 
+class OutOfBoundsAssignmentAdapter:
+    name = "out_of_bounds_assignment"
+    capabilities = ("test",)
+
+    def solve(
+        self,
+        problem: OptimizationProblem,
+        options: SolverOptions | None = None,
+    ) -> SolveReport:
+        return SolveReport(
+            status="feasible",
+            objective_value=2,
+            assignments={"x": 2},
+            rule_trace=tuple(rule.rule_id for rule in problem.rules),
+        )
+
+
+class MissingObjectiveAssignmentAdapter:
+    name = "missing_objective_assignment"
+    capabilities = ("test",)
+
+    def solve(
+        self,
+        problem: OptimizationProblem,
+        options: SolverOptions | None = None,
+    ) -> SolveReport:
+        return SolveReport(
+            status="feasible",
+            objective_value=0,
+            assignments={},
+            rule_trace=tuple(rule.rule_id for rule in problem.rules),
+        )
+
+
 def test_run_solver_delegates_valid_problem_to_adapter() -> None:
     problem = _valid_problem()
     adapter = RecordingAdapter()
@@ -159,6 +193,28 @@ def test_run_solver_rejects_adapter_report_that_violates_constraints() -> None:
 
     assert report.status == "not_run"
     assert "violated_constraint" in report.diagnostics[0]
+
+
+def test_run_solver_rejects_adapter_report_outside_variable_bounds() -> None:
+    report = run_solver(_valid_problem(), OutOfBoundsAssignmentAdapter())
+
+    assert report.status == "not_run"
+    assert "assignment_out_of_bounds" in report.diagnostics[0]
+
+
+def test_run_solver_requires_assignments_for_objective_variables() -> None:
+    problem = OptimizationProblem(
+        brief=BusinessBrief("Objective fixture", "Require complete assignments.", "Test."),
+        rules=(RuleSpec("soft.cost", "Prefer lower cost.", "soft"),),
+        variables=(DecisionVariable("x", "binary"),),
+        constraints=(),
+        objective=Objective("soft.cost", "minimize", {"x": 1}),
+    )
+
+    report = run_solver(problem, MissingObjectiveAssignmentAdapter())
+
+    assert report.status == "not_run"
+    assert "missing_assignment_value" in report.diagnostics[0]
 
 
 def test_exhaustive_assignment_adapter_runs_public_demo_solver() -> None:

@@ -157,5 +157,26 @@ def test_validation_reports_duplicate_ids_invalid_bounds_and_unknown_report_trac
         "duplicate_rule_id",
         "duplicate_variable_name",
         "invalid_variable_bounds",
+        "invalid_binary_bounds",
     ]
     assert [issue.code for issue in report_issues] == ["unknown_report_rule"]
+
+
+def test_validation_reports_invalid_discrete_variable_bounds() -> None:
+    problem = OptimizationProblem(
+        brief=BusinessBrief("Invalid bounds fixture", "Expose discrete bound failures.", "Test."),
+        rules=(RuleSpec("soft.cost", "Prefer lower cost.", "soft"),),
+        variables=(
+            DecisionVariable("x", "binary", 0, 2),
+            DecisionVariable("y", "integer", 0.5, 4),
+        ),
+        constraints=(),
+        objective=Objective("soft.cost", "minimize", {"x": 1, "y": 1}),
+    )
+
+    issues = validate_problem(problem)
+
+    assert [issue.code for issue in issues] == [
+        "invalid_binary_bounds",
+        "invalid_integer_bounds",
+    ]

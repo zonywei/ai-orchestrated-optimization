@@ -46,6 +46,17 @@ class CpSatAdapter:
                 ),
             )
 
+        invalid_binary_bounds = _invalid_binary_bounds(problem)
+        if invalid_binary_bounds:
+            return SolveReport(
+                status="not_run",
+                objective_value=None,
+                diagnostics=tuple(
+                    f"invalid_binary_bounds: {variable_name}"
+                    for variable_name in invalid_binary_bounds
+                ),
+            )
+
         non_integer_values = _non_integer_model_values(problem)
         if non_integer_values:
             return SolveReport(
@@ -117,7 +128,7 @@ class CpSatAdapter:
 def _new_cp_variable(model: object, variable: DecisionVariable) -> object:
     lower_bound = int(variable.lower_bound)
     upper_bound = int(variable.upper_bound)
-    if variable.kind == "binary":
+    if variable.kind == "binary" and lower_bound == 0 and upper_bound == 1:
         return model.NewBoolVar(variable.name)
     return model.NewIntVar(lower_bound, upper_bound, variable.name)
 
@@ -149,6 +160,17 @@ def _non_integer_model_values(problem: OptimizationProblem) -> tuple[str, ...]:
         if not _is_integer(coefficient):
             value_names.append(f"objective.coefficients[{variable_name}]")
     return tuple(value_names)
+
+
+def _invalid_binary_bounds(problem: OptimizationProblem) -> tuple[str, ...]:
+    return tuple(
+        variable.name
+        for variable in problem.variables
+        if variable.kind == "binary"
+        and _is_integer(variable.lower_bound)
+        and _is_integer(variable.upper_bound)
+        and not (0 <= variable.lower_bound <= variable.upper_bound <= 1)
+    )
 
 
 def _is_integer(value: int | float) -> bool:

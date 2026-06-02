@@ -53,6 +53,25 @@ def test_cp_sat_adapter_reports_unsupported_public_continuous_variable() -> None
     assert "unsupported_variable_kind" in report.diagnostics[0]
 
 
+def test_cp_sat_adapter_honors_fixed_binary_bounds() -> None:
+    problem = OptimizationProblem(
+        brief=BusinessBrief("CP-SAT fixture", "Honor fixed public binary bounds.", "Test."),
+        rules=(RuleSpec("soft.cost", "Prefer lower cost.", "soft"),),
+        variables=(
+            DecisionVariable("x", "binary", 1, 1),
+            DecisionVariable("y", "binary", 0, 0),
+        ),
+        constraints=(),
+        objective=Objective("soft.cost", "minimize", {"x": 1, "y": 1}),
+    )
+
+    report = run_solver(problem, CpSatAdapter(), SolverOptions(time_limit_seconds=5))
+
+    assert report.status == "optimal"
+    assert report.objective_value == 1
+    assert report.assignments == {"x": 1, "y": 0}
+
+
 def test_workforce_cp_sat_example_is_synthetic_and_runs() -> None:
     data = json.loads(Path("examples/workforce_rostering_cp_sat.json").read_text(encoding="utf-8"))
     assert len(data["operators"]) * len(data["shifts"]) == 30
