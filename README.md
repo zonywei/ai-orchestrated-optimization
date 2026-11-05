@@ -153,12 +153,6 @@ slot_4=dia
 slot_5=eli
 ```
 
-## Demo Output (Actual Run)
-
-![CP-SAT workforce rostering result](docs/images/ai-orchestrated-optimization-1.png)
-
-![Demo terminal output](docs/images/ai-orchestrated-optimization-2.png)
-
 ## Public Repository Layout
 
 ```text
